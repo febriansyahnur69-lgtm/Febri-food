@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEBRIFOOD | Blog Makanan</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#f5f5f5;--card:#fff;--text:#222;--muted:#777;--accent:#ff6b25}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;line-height:1.6}
+body.dark{--bg:#101217;--card:#1d222b;--text:#f5f5f5;--muted:#bbc0ca}
+a{text-decoration:none;color:inherit}
+header{background:#17191d;color:white;padding:15px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.logo{font-size:24px;font-weight:900}
+.logo span{color:var(--accent)}
+nav{display:flex;gap:18px;flex-wrap:wrap}
+nav a:hover{color:var(--accent)}
+button{cursor:pointer}
+.theme{background:none;border:0;color:white;font-size:22px}
+.hero{padding:65px 7%;color:white;background:linear-gradient(90deg,#000c,#0003),url('https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1400&q=80') center/cover}
+.hero h1{font-size:clamp(32px,5vw,52px);line-height:1.15;margin:8px 0}
+.hero h1 span{color:#ff8a3d}
+.hero p{max-width:520px}
+.btn{display:inline-block;background:var(--accent);color:white;border:0;border-radius:8px;padding:11px 17px;font-weight:bold}
+.container{max-width:1150px;margin:auto;padding:25px 16px;display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:22px}
+h2{font-size:23px}
+.posts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card,.widget{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 3px 14px #0000000a}
+.card img{width:100%;height:180px;object-fit:cover;display:block;cursor:pointer}
+.content{padding:14px}
+.tag{display:inline-block;background:var(--accent);color:white;padding:3px 9px;border-radius:5px;font-size:12px}
+.card h3{line-height:1.35;margin:9px 0}
+.card p,.widget p{font-size:13px;color:var(--muted)}
+.read{border:0;background:none;color:var(--accent);font-weight:bold;padding:0}
+.meta{font-size:11px;color:var(--muted);margin-bottom:10px}
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.widget{padding:17px}
+.widget h3{margin:0 0 10px}
+input{width:100%;padding:11px;border:1px solid #ddd;border-radius:7px;background:var(--card);color:var(--text)}
+.search{display:flex;gap:6px}
+.search button{background:var(--accent);border:0;color:white;border-radius:7px;padding:0 13px}
+.categories button{display:block;width:100%;text-align:left;padding:9px 0;background:none;border:0;border-bottom:1px solid #8883;color:var(--text)}
+.categories button:hover{color:var(--accent)}
+.popular{display:flex;gap:10px;margin:12px 0;align-items:center}
+.popular img{width:65px;height:55px;object-fit:cover;border-radius:7px}
+.popular button{border:0;background:none;text-align:left;color:var(--text);font-weight:bold}
+.pages{text-align:center;padding:22px}
+.pages button{padding:7px 13px;border:0;border-radius:6px;margin:3px;background:var(--card);color:var(--text)}
+.pages button.active{background:var(--accent);color:white}
+footer{background:#17191d;color:#ddd;text-align:center;padding:23px;font-size:13px}
+footer b{color:var(--accent)}
+.modal{display:none;position:fixed;inset:0;background:#000c;z-index:5;padding:15px;align-items:center;justify-content:center}
+.modal.show{display:flex}
+.modalbox{background:var(--card);color:var(--text);max-width:650px;width:100%;max-height:90vh;overflow:auto;border-radius:12px;position:relative}
+.modalbox img{width:100%;height:260px;object-fit:cover}
+.modalbody{padding:20px}
+.close{position:absolute;right:12px;top:12px;border:0;border-radius:50%;background:#17191d;color:white;font-size:22px;width:35px;height:35px}
+@media(max-width:760px){.container{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr}header{padding:14px}.hero{padding:50px 20px}}
+@media(max-width:480px){.posts{grid-template-columns:1fr}.card img{height:205px}.sidebar{display:flex}nav{gap:12px;font-size:13px}.hero{padding:45px 18px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#">🍳 FEBRI<span>FOOD.</span></a>
+  <nav>
+    <a href="#">Beranda</a>
+    <a href="#artikel">Resep</a>
+    <a href="#kategori">Kategori</a>
+    <a href="#tentang">Tentang</a>
+  </nav>
+  <button class="theme" id="theme">☾</button>
+</header>
+
+<section class="hero">
+  <p>SELAMAT DATANG DI BLOG FEBRI!</p>
+  <h1>Jelajahi Dunia Rasa<br><span>dari Dapur Kita</span></h1>
+  <p>Temukan resep masakan, inspirasi kuliner, makanan lezat, dan tips dapur sederhana setiap hari.</p>
+  <a class="btn" href="#artikel">Jelajahi Artikel →</a>
+</section>
+
+<div class="container">
+<main id="artikel">
+  <h2 id="heading">🍴 Artikel Terbaru</h2>
+  <div class="posts" id="posts"></div>
+  <div class="pages" id="pages"></div>
+</main>
+
+<aside class="sidebar">
+  <section class="widget" id="tentang">
+    <h3>👨‍🍳 Tentang Penulis</h3>
+    <b>Febriansyah Nur Wahid</b>
+    <p>Halo! Aku Febri. Selamat datang di blog makanan milikku. Di sini kamu bisa menemukan resep, ide masakan, dan cerita kuliner.</p>
+  </section>
+
+  <section class="widget">
+    <h3>🔎 Cari Artikel</h3>
+    <form class="search" id="searchForm">
+      <input id="search" placeholder="Cari makanan..." aria-label="Cari artikel">
+      <button type="submit">Cari</button>
+    </form>
+  </section>
+
+  <section class="widget" id="kategori">
+    <h3>📚 Kategori</h3>
+    <div class="categories" id="categories"></div>
+  </section>
+
+  <section class="widget">
+    <h3>🔥 Artikel Populer</h3>
+    <div id="popular"></div>
+  </section>
+</aside>
+</div>
+
+<footer>
+  © <span id="year"></span> <b>FEBRIFOOD</b> · Dibuat oleh Febri ❤️
+</footer>
+
+<div class="modal" id="modal">
+  <div class="modalbox">
+    <button class="close" id="close">×</button>
+    <img id="modalImg" src="" alt="Foto makanan">
+    <div class="modalbody">
+      <span class="tag" id="modalCat"></span>
+      <h2 id="modalTitle"></h2>
+      <div class="meta" id="modalMeta"></div>
+      <div id="modalText"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const articles=[
+{id:1,cat:"Resep",title:"Nasi Goreng Spesial Rumahan",date:"27 Oktober 2026",img:"https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",desc:"Nasi goreng gurih dengan bumbu sederhana, cocok untuk sarapan.",body:"Bahan: nasi putih, telur, bawang putih, bawang merah, kecap manis, garam, dan merica.\n\nCara membuat: tumis bawang hingga harum, masukkan telur dan orak-arik. Tambahkan nasi dan bumbu. Aduk hingga rata lalu sajikan hangat."},
+{id:2,cat:"Resep",title:"Ayam Panggang yang Menggugah Selera",date:"26 Oktober 2026",img:"https://images.unsplash.com/photo-1532634896-26909d0d4b16?auto=format&fit=crop&w=800&q=80",desc:"Ide menu ayam panggang untuk makan bersama keluarga.",body:"Bahan: ayam, madu, kecap manis, bawang putih, garam, dan ketumbar.\n\nCara membuat: lumuri ayam dengan bumbu. Masak hingga matang, kemudian panggang sambil diolesi madu dan kecap. Pastikan ayam matang hingga bagian dalam."},
+{id:3,cat:"Kuliner",title:"Makanan Berkuah untuk Cuaca Dingin",date:"25 Oktober 2026",img:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80",desc:"Hidangan berkuah hangat yang cocok disantap saat hujan.",body:"Makanan berkuah seperti bakso dan mi kuah cocok dinikmati saat cuaca dingin. Pilih tempat makan yang bersih dan pastikan makanan disajikan panas. Tambahkan sayuran sesuai selera."},
+{id:4,cat:"Minuman",title:"Es Buah Segar Buatan Sendiri",date:"24 Oktober 2026",img:"https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=800&q=80",desc:"Minuman buah segar yang gampang dibuat di rumah.",body:"Bahan: melon, semangka, pepaya, air matang, es batu, dan sirup secukupnya.\n\nCara membuat: cuci buah sebelum dipotong. Campur semua buah dengan air dan sedikit sirup. Tambahkan es saat akan disajikan."},
+{id:5,cat:"Tips",title:"Tips Memasak Tempe agar Lebih Nikmat",date:"23 Oktober 2026",img:"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",desc:"Bumbu sederhana untuk membuat masakan rumahan makin lezat.",body:"Pilih tempe segar yang beraroma khas. Iris sesuai selera lalu bumbui dengan bawang putih, ketumbar, dan garam. Goreng dengan minyak panas hingga matang."},
+{id:6,cat:"Kuliner",title:"Jajanan Favorit untuk Akhir Pekan",date:"22 Oktober 2026",img:"https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",desc:"Inspirasi jajanan lokal untuk dicoba bersama teman atau keluarga.",body:"Kamu bisa mencoba sate, siomay, jagung bakar, martabak, atau jajanan pasar. Pilih penjual yang menjaga kebersihan dan menyajikan makanan yang baru dimasak."},
+{id:7,cat:"Makanan Sehat",title:"Ide Sarapan Praktis Setiap Hari",date:"21 Oktober 2026",img:"https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80",desc:"Inspirasi sarapan sederhana dengan bahan yang mudah ditemukan.",body:"Contoh sarapan praktis adalah roti dan telur dengan buah, nasi dengan lauk serta sayur, atau oatmeal dengan susu dan pisang. Pilih menu yang kamu sukai."},
+{id:8,cat:"Minuman",title:"Jus Buah Segar untuk Teman Santai",date:"20 Oktober 2026",img:"https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80",desc:"Jus buah sederhana dengan rasa segar alami.",body:"Potong buah matang lalu blender dengan sedikit air dingin. Cicipi sebelum menambahkan pemanis. Sajikan segera agar kesegarannya terjaga."}
+];
+
+let category="Semua",query="",page=1;
+const perPage=6;
+const posts=document.getElementById("posts");
+const pages=document.getElementById("pages");
+
+function filtered(){
+ return articles.filter(a=>
+ (category==="Semua"||a.cat===category)&&
+ (a.title+" "+a.cat+" "+a.desc).toLowerCase().includes(query.toLowerCase())
+ );
+}
+
+function openArticle(id){
+ const a=articles.find(x=>x.id===id);
+ document.getElementById("modalImg").src=a.img;
+ document.getElementById("modalCat").textContent=a.cat;
+ document.getElementById("modalTitle").textContent=a.title;
+ document.getElementById("modalMeta").textContent=a.date;
+ const box=document.getElementById("modalText");
+ box.replaceChildren();
+ a.body.split("\n\n").forEach(t=>{
+   const p=document.createElement("p");
+   p.textContent=t;
+   box.appendChild(p);
+ });
+ document.getElementById("modal").classList.add("show");
+}
+
+function render(){
+ const all=filtered();
+ const total=Math.max(1,Math.ceil(all.length/perPage));
+ if(page>total)page=1;
+ posts.replaceChildren();
+
+ const visible=all.slice((page-1)*perPage,page*perPage);
+
+ visible.forEach(a=>{
+  const card=document.createElement("article");
+  card.className="card";
+  card.innerHTML=`
+   <img src="${a.img}" alt="${a.title}" loading="lazy">
+   <div class="content">
+    <span class="tag">${a.cat}</span>
+    <h3>${a.title}</h3>
+    <p>${a.desc}</p>
+    <div class="meta">${a.date}</div>
+    <button class="read">Baca selengkapnya →</button>
+   </div>`;
+  card.querySelector("img").onclick=()=>openArticle(a.id);
+  card.querySelector(".read").onclick=()=>openArticle(a.id);
+  posts.appendChild(card);
+ });
+
+ if(!visible.length){
+  posts.innerHTML='<p>Artikel tidak ditemukan.</p>';
+ }
+
+ pages.replaceChildren();
+ for(let i=1;i<=total;i++){
+  const b=document.createElement("button");
+  b.textContent=i;
+  b.className=i===page?"active":"";
+  b.onclick=()=>{page=i;render()};
+  pages.appendChild(b);
+ }
+}
+
+const cats=["Semua","Resep","Kuliner","Minuman","Tips","Makanan Sehat"];
+document.getElementById("categories").innerHTML=
+ cats.map(c=>`<button data-cat="${c}">${c} →</button>`).join("");
+
+document.querySelectorAll("#categories button").forEach(b=>{
+ b.onclick=()=>{
+  category=b.dataset.cat;
+  query="";
+  document.getElementById("search").value="";
+  page=1;
+  document.getElementById("heading").textContent=
+   category==="Semua"?"🍴 Artikel Terbaru":"📚 "+category;
+  render();
+ };
+});
+
+[1,2,3].forEach(id=>{
+ const a=articles.find(x=>x.id===id);
+ const item=document.createElement("div");
+ item.className="popular";
+ item.innerHTML=`<img src="${a.img}" alt="${a.title}" loading="lazy"><button>${a.title}</button>`;
+ item.querySelector("button").onclick=()=>openArticle(id);
+ document.getElementById("popular").appendChild(item);
+});
+
+document.getElementById("searchForm").onsubmit=e=>{
+ e.preventDefault();
+ query=document.getElementById("search").value.trim();
+ category="Semua";
+ page=1;
+ document.getElementById("heading").textContent="Hasil Pencarian";
+ render();
+};
+
+document.getElementById("theme").onclick=()=>{
+ document.body.classList.toggle("dark");
+ document.getElementById("theme").textContent=
+ document.body.classList.contains("dark")?"☀":"☾";
+};
+
+function closeModal(){
+ document.getElementById("modal").classList.remove("show");
+}
+document.getElementById("close").onclick=closeModal;
+document.getElementById("modal").onclick=e=>{
+ if(e.target.id==="modal")closeModal();
+};
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape")closeModal();
+});
+document.getElementById("year").textContent=new Date().getFullYear();
+render();
+</script>
+</body>
+</html>
